@@ -13,17 +13,18 @@ output = dec.survey_flatten(dl)
 def survey_action():
 	survey_action = -9
 	while survey_action not in range(0,4):
-		print("""\n> Choose next action:
-  (1) print all survey data to screen
-  (2) export survey data to file
-  (3) search for a study
-  (0) exit""")
-		survey_action = input()
+		print """\n> Choose next action:
+1: print all survey data to screen
+2: export survey data to file
+3: search for a study
+0: exit
+		"""
+		survey_action = raw_input()
 		try:
 			survey_action = int(survey_action)
 			if survey_action == 0:
 				if debug == 1:
-					print("[DEBUG] survey_action == 0")
+					print "[DEBUG] survey_action == 0"
 				exit = 1
 				return exit
 			if survey_action == 1:
@@ -44,3 +45,5 @@ def survey_action():
 exit = 0
 while exit != 1:
 	exit = survey_action()
+
+print "Bye"

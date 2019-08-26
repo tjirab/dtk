@@ -81,6 +81,6 @@ fi
 beacon login
 
 # Create link
-sudo ln -s "python ${CURDIR}/main.py" /usr/local/bin/dct
+sudo ln -s "python ${CURDIR}/main.py" /usr/local/bin/dtk
 
-echo "\nDone!\n\nNow run 'dct' in terminal to activate the program\n\n"
+echo "\nDone!\n\nNow run 'dtk' in terminal to activate the program\n\n"

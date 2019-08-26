@@ -4,16 +4,15 @@
 from decipher.beacon import api
 from halo import Halo
 import csv, sys, re, datetime, dateutil.parser, os, getpass
-import importlib
 debug=0
 
-# importlib.reload(sys)
-# sys.setdefaultencoding('utf8')
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 class tools:
 
 	def __init__(self):
-		print("")
+		print ""
 
 	# Validate availability modules
 	def validate_modules(self):
@@ -28,8 +27,8 @@ class tools:
 					import subprocess
 					if sys.version_info.major == 2:
 						subprocess.call(['pip2', 'install', m])
-					else:
-						subprocess.call(['pip3', 'install', m])
+		    		else:
+		        		subprocess.call(['pip3', 'install', m])
 			spinner.succeed('Required modules available')
 		except:
 			spinner.fail('One ore more modules failed to load')
@@ -53,57 +52,57 @@ class tools:
 	# Search pattern
 	def search_string(self):
 		if debug == 1:
-			print('[DEBUG] Capturing search string')
+			print '[DEBUG] Capturing search string'
 		question = '> Enter search string'
 		search_str_raw = ''
 		while len(search_str_raw) < 1:
-			print(question)
-			search_str_raw = input()
+			print question
+			search_str_raw = raw_input()
 		search_str = re.compile(''.join(['.*', search_str_raw, '.*']).lower())
 		return search_str
 
 	# Read API token
 	def read_api_token(self):
 		if debug == 1:
-			print('[DEBUG] Reading API token (read_api_token())')
+			print '[DEBUG] Reading API token (read_api_token())'
 		try:
 			config = open('/Users/' + getpass.getuser() + '/.decipher/config', 'r')
 			api_token = [s.rstrip() for s in config.readlines() if "APITOKEN" in s]
 			config.close()
 			if len(api_token) == 0:
-				print("[ERROR] No api token was found, make sure to run decipher-install.sh first")
+				print "[ERROR] No api token was found, make sure to run decipher-install.sh first"
 			if debug == 1:
-				print('[DEBUG] API token OK')
+				print '[DEBUG] API token OK'
 			return api_token[0][9:]
 		except:
-			print(("[ERROR] ", sys.exc_info()[0]))
+			print("[ERROR] ", sys.exc_info()[0])
 			raise
 
 	# Decipher login
 	def decipher_login(self):
 		if debug == 1:
-			print('[DEBUG] Logging into Decipher (decipher_login())')
+			print '[DEBUG] Logging into Decipher (decipher_login())'
 		try:
 			api.login(self.read_api_token(), "https://v2.decipherinc.com")
 			if debug == 1:
-				print('[DEBUG] Logged in')
+				print '[DEBUG] Logged in'
 		except:
-			print(("[ERROR] ", sys.exc_info()[0]))
+			print("[ERROR] ", sys.exc_info()[0])
 			raise
 
 	# Read survey
 	def read_survey(self):
 		if debug == 1:
-			print('[DEBUG] Capturing survey ID (read_survey())')
+			print '[DEBUG] Capturing survey ID (read_survey())'
 		question = "> Enter survey (e.g. lkn15004)"
-		print(question)
+		print question
 		survey = ''
-		survey = input()
+		survey = raw_input()
 		while len(survey) < 1:
-			print(question)
-			survey = input()
+			print question
+			survey = raw_input()
 		if debug == 1:
-			print('[DEBUG] Valid survey ID input')
+			print '[DEBUG] Valid survey ID input'
 		return survey
 
 	# Download datamap/survey
@@ -206,11 +205,11 @@ class tools:
 
 	# Search surveys
 	def survey_search(self, dl, search_str):
-		for i, j in dl.items():
+		for i, j in dl.iteritems():
 			match = re.match(search_str, i.lower())
 			try:
 				match_grp = match.group()
-				print("{:<50} {:<20}".format(i, j))
+				print "{:<50} {:<20}".format(i, j)
 			except:
 				continue
 
@@ -219,7 +218,7 @@ class tools:
 		spinner.start()
 		try:
 			out = 'title\tpath_trimmed\n'
-			for i, j in dl.items():
+			for i, j in dl.iteritems():
 				out += "\t".join([i, j]) + "\n"
 			spinner.succeed('Conversion complete')
 			return out
@@ -229,24 +228,24 @@ class tools:
 	# Print all surveys
 	def survey_print_all(self, dl):
 		try:
-			for i, j in dl.items():
-				print("{:<50} {:<20}".format(i, j))
+			for i, j in dl.iteritems():
+				print "{:<50} {:<20}".format(i, j)
 		except:
-			print(("[ERROR] ", sys.exc_info()[0]))
+			print("[ERROR] ", sys.exc_info()[0])
 			raise
 
 	# Print quotas
 	def print_quotas(self, dl):
 		for i in sorted(dl['markers']):
-			print("Group: " + str(i))
+			print "Group: " + str(i)
 			limit = dl['markers'][i]['limit']
 			pending = dl['markers'][i]['pending']
 			oq = dl['markers'][i]['oq']
 			complete = dl['markers'][i]['complete']
 			pct_complete = "{:.2f}".format((complete / limit)*100)
-			print(("\tComplete: {} ({}%)\n\tLimit:\t  {}\n").format(complete, pct_complete, limit))
+			print("\tComplete: {} ({}%)\n\tLimit:\t  {}\n").format(complete, pct_complete, limit)
 			if oq > 0:
-				print(("\t[WARNING] Overquota: {})").format(oq))
+				print("\t[WARNING] Overquota: {})").format(oq)
 
 	# Write
 	def store(self, output, survey, datatype=''):
@@ -261,8 +260,8 @@ class tools:
 			f = open('/Users/' + getpass.getuser() + '/Desktop/' + file_name + '.tsv', 'w')
 			f.write(output)
 			f.close()
-			spinner.succeed('Success! Written {} to desktop.'.format(file_name))
+			spinner.succeed('Success')
 		except:
 			spinner.fail('Error')
-			print(("[ERROR] ", sys.exc_info()[0]))
+			print("[ERROR] ", sys.exc_info()[0])
 			raise
