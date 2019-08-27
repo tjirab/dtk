@@ -54,11 +54,9 @@ class tools:
 	def search_string(self):
 		if debug == 1:
 			print('[DEBUG] Capturing search string')
-		question = '> Enter search string'
 		search_str_raw = ''
 		while len(search_str_raw) < 1:
-			print(question)
-			search_str_raw = input()
+			search_str_raw = input('> Enter search string: ')
 		search_str = re.compile(''.join(['.*', search_str_raw, '.*']).lower())
 		return search_str
 
@@ -93,17 +91,9 @@ class tools:
 
 	# Read survey
 	def read_survey(self):
-		if debug == 1:
-			print('[DEBUG] Capturing survey ID (read_survey())')
-		question = "> Enter survey (e.g. lkn15004)"
-		print(question)
 		survey = ''
-		survey = input()
 		while len(survey) < 1:
-			print(question)
-			survey = input()
-		if debug == 1:
-			print('[DEBUG] Valid survey ID input')
+			survey = input("> Enter survey ID: ")
 		return survey
 
 	# Download datamap/survey
@@ -261,7 +251,7 @@ class tools:
 			f = open('/Users/' + getpass.getuser() + '/Desktop/' + file_name + '.tsv', 'w')
 			f.write(output)
 			f.close()
-			spinner.succeed('Success! Written {} to desktop.'.format(file_name))
+			spinner.succeed('Success! Written {} to desktop.\n'.format(file_name))
 		except:
 			spinner.fail('Error')
 			print(("[ERROR] ", sys.exc_info()[0]))
